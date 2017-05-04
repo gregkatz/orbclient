@@ -1,32 +1,18 @@
 use std::cmp;
+use std::ptr;
 
 use FONT;
 use color::Color;
 use graphicspath::GraphicsPath;
 use graphicspath::PointType;
 
-#[cfg(target_arch = "x86")]
 #[inline(always)]
 #[cold]
 pub unsafe fn fast_set32(dst: *mut u32, src: u32, len: usize) {
-    asm!("cld
-        rep stosd"
-        :
-        : "{edi}"(dst as usize), "{eax}"(src), "{ecx}"(len)
-        : "cc", "memory", "edi", "ecx"
-        : "intel", "volatile");
-}
-
-#[cfg(target_arch = "x86_64")]
-#[inline(always)]
-#[cold]
-pub unsafe fn fast_set32(dst: *mut u32, src: u32, len: usize) {
-    asm!("cld
-        rep stosd"
-        :
-        : "{rdi}"(dst as usize), "{eax}"(src), "{rcx}"(len)
-        : "cc", "memory", "rdi", "rcx"
-        : "intel", "volatile");
+    if len > isize::max_value() as usize { return }
+    for i in 0..len {
+        ptr::write(dst.offset(i as isize), src);
+    }
 }
 
 pub trait Renderer {

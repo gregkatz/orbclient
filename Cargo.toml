@@ -12,6 +12,9 @@ authors = ["Jeremy Soller <jackpot51@gmail.com>"]
 name = "orbclient"
 path = "src/lib.rs"
 
+[dependencies]
+lazy_static = "*"
+
 [target.'cfg(not(target_os = "redox"))'.dependencies]
 sdl2 = "0.29"
 

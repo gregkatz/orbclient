@@ -1,6 +1,6 @@
 extern crate sdl2;
 
-use std::{mem, ptr, slice};
+use std::{mem, slice};
 use std::sync::atomic::{AtomicUsize, ATOMIC_USIZE_INIT, Ordering};
 
 use color::Color;
@@ -8,13 +8,14 @@ use event::*;
 use renderer::Renderer;
 use WindowFlag;
 
-static SDL_USAGES: AtomicUsize = ATOMIC_USIZE_INIT;
+static mut SDL_USAGES: AtomicUsize = ATOMIC_USIZE_INIT;
 /// SDL2 Context
-static mut SDL_CTX: *mut sdl2::Sdl = ptr::null_mut();
+static mut SDL_CTX: *mut sdl2::Sdl = 0x0 as *mut sdl2::Sdl;
 /// Video Context
-static mut VIDEO_CTX: *mut sdl2::VideoSubsystem = ptr::null_mut();
+static mut VIDEO_CTX: *mut sdl2::VideoSubsystem = 0x0 as *mut sdl2::VideoSubsystem;
 /// Event Pump
-static mut EVENT_PUMP: *mut sdl2::EventPump = ptr::null_mut();
+static mut EVENT_PUMP: *mut sdl2::EventPump = 0x0 as *mut sdl2::EventPump;
+
 
 //Call this when the CTX needs to be used is created
 #[inline]

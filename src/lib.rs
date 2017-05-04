@@ -1,7 +1,5 @@
 #![crate_name="orbclient"]
 #![crate_type="lib"]
-#![feature(asm)]
-#![feature(const_fn)]
 
 #![deny(warnings)]
 
